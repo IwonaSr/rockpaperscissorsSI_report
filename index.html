@@ -28,10 +28,26 @@
     		<p>Wybrany przez nas projekt zakładał wykorzystanie kamery w rozgrywce. Aplikacja miała posiadać zdolność rozpoznawania jednego z trzech gestów używanych w grze. Cały proces powinien odbywać się w czasie rzeczywistym. Do tego celu została wykorzystana biblioteka OpenCV.</p>
 
     		<h2>Realizacja</h2>
-    		<p>Projektując program zdolny do analizy rzeczywistych obrazów z kamery należy mieć na uwadze wiele aspektów, które nie występują w zero-jedynkowym świecie. Istnieje bardzo wiele zmiennych niezależnych od samego algorytmu, mających duże znaczenie na wynikowe dane. Nie ma jednej określonej metody, która sprawdza się we większości warunków np. oświetlenia, odległości użytkownika od kamery, sposobu prezentacji gestów.<p>
+    		<p>Projektując program zdolny do analizy rzeczywistych obrazów z kamery należy mieć na uwadze wiele aspektów, które nie występują w zero-jedynkowym świecie. Istnieje bardzo wiele zmiennych niezależnych od samego algorytmu, mających duże znaczenie na wynikowe dane. Nie ma jednej określonej metody, która sprawdza się we większości warunków. Problemy z jakimi musieliśmy się zmierzyć to m. in.:
+    		<ul>
+	    		<li>znaczący wpływ niskiej jakość obrazu przetworzonego z kamery w latopie na wykrywanie konturu dłoni</li>
+	    		<li>niska jakość wykrywania obiektu przy słabym oświetleniu</li>
+	    		<li>możliwość ruchu wykrywanego obiektu</li>
+	    		<li>malejąca responsywność aplikacji przy dużej złożoności obliczeń, co narzuca wymóg bardzo wydajnego sprzętu</li>
+	    		<li>brak sprecyzowanego koloru i struktury tła, na którym będzie znajdować sie dłoń</li>
+	    		<li>duża elastyczność w doborze odległości dłoni od kamery</li>
+	    		<li>ustawienie dłoni i palców pod róznym kątem</li>
+	    		<li>stosunkowo duże zróżnicowanie w wielkości, karnacji, kształtu palców i całej dłoni, a także dopuszczalne różnice w ułożeniu paców podczas pokazywania odpowiednich gestów:
+					<ul>
+						<li>schowane lub odkryte paznokcie w figurze “kamień”</li>
+						<li>dowolne, ale nie zmieniajace gestu, ułożenie pozostałych trzech palców w figurze “nożyce”</li>
+						<li>rozmiar przestrzeni miedzy palcami lub jej brak w figurze “papier”</li>
+					</ul>
+				</li>
+    		</ul><p>
 
     		<p>Po przeanalizowaniu możliwych rozwiązań wybraliśmy system HaarTraining, ze względu na rozbudowana dokumentację biblioteki opencv, duży wachlarz dostępnych funkcji, popularność, a także liczbę pomocnych tutoriali.
-Inne testowane przez nas rozwiazania były częścią dużych rozbudowanych projektów. Nie stanowiły one tutoriali a jedynie pokaz możliwości biblioteki opencv. </p>
+Inne testowane przez nas rozwiazania były częścią dużych rozbudowanych projektów. Nie stanowiły one opisu rozwiązania problemu rozpoznawania gestów, a jedynie pokaz możliwości biblioteki opencv. </p>
 
 <p>HaarTraining służy do tworzenia i trenowania kaskady wyszukującej dany obiekt w obrazie. 
 Aby z niego skorzystać należy zebrać odpowiednią ilość zdjęć negatywnych (nie zawierajacych szukanego obiektu) oraz pozytywnych (zawierajacych dany obiekt). 
@@ -48,7 +64,18 @@ Po wykonaniu testów plików, które udało nam sie znaleźć wybraliśmy 3, kt�
 <p>Biblioteka OpenCV oferuje podstawowe komponenty do budowy interfejsu graficznego użytkownika. Zawartość tej biblioteki jest jednak ograniczona i to rozwiązanie nie sprawdza się przy kompleksowych projektach. 
 Zdecydowaliśmy się na wykorzystanie Qt - zestawu przenośnych bibliotek i narzędzi programistycznych dedykowanych dla języków C++, QML, Java, których podstawowym składnikiem są klasy służące do budowy GUI. 
 Do tego celu wykorzystaliśmy środowisko programistyczne Qt Creator, które znacząco ułatwiło równoległa pracę obu bibliotek i dotsarczyło narzedzi do konwertowania dwóch różnych typów obrazu w poszególnych bibliotekach.</p>
+<p> Przedstawiony niżej diagram dokładnie prezentuje działanie aplikacji i zależności klas:</p>
+<img src="http://i.imgur.com/VkNFVko.jpg" />
 
+<h2>Rezultaty</h2>
+<p>Duża liczba wymienionych problemów przyczyniła się do wprowadzenia przez nas pewnych ograniczeń dostyczących odległości dłoni od monitora, złączonych palców w figurze "papier", brak innych elementów na ekranie podczas rozgrywki, głdakiego, niekoniecznie jasnego tła za dłoniom. W celu poprawnego działnia programu mimo narzuconych ograniczeń stworzone zostało okienko testowe pozwalajace na poprawne ustawienie kamery oraz dłoni.
+Zakładając, ze bedziemy korzystać z aplikacji przy świetle dziennym efekt końcowy jest bardzo zadowalający:</p>
+<p></p>
+<center>
+<iframe width="854" height="510" src="http://www.youtube.com/embed/mF5kyLTczuE" frameborder="0" allowfullscreen></iframe>
+</center>
+
+<p></p>
 
     		<h1>Algorytm strategii gry</h1>
     		<h2>Kontekst</h2>
@@ -98,6 +125,15 @@ Do tego celu wykorzystaliśmy środowisko programistyczne Qt Creator, które zna
 						<img src="images/screeny/6.png" />
 					</div>
 				</div>
+				<br />
+				<h1>Źródła</h1>
+				<ul>
+					<li><a herf="http://note.sonots.com/SciSoftware/haartraining.html"> Tutorial o Haarrainingu</a></li>
+					<li><a herf="https://www.youtube.com/watch?v=PR6wVy7Et1A&list=SP2D1942A4688E9D63"> Wątki w połączeniu GUI i Qt</a></li>
+					<li><a herf="http://www.ee.pw.edu.pl/~czajewsw/studenckie/inne/opencv_doc/highgui_8h.html#5683e93bb1c53f5d099a72f7b47ab22e"> Dokumentacja do tych funkcji pobierajacych obraz z kamery</a></li>
+				</ul>
+				<br />
+				<br />
 				<br />
 				<br />
 				<br />
