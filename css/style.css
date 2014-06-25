@@ -1,0 +1,29 @@
+body {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.header {
+	padding: 50px 0;
+	background: #f6f6f6;
+	margin-bottom: 50px;
+}
+
+.header img.logo {
+	max-width: 300px;
+	height: auto;
+}
+
+.header p {
+	color: #21aaa0;
+	font-size: 24px;
+	font-weight: 400;
+}
+
+h2 {
+	font-weight: 400;
+}
+
+div img {
+	width: 100%;
+	height: auto;
+}

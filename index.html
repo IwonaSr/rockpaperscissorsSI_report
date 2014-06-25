@@ -1,0 +1,108 @@
+<!<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RockPapersScissorsSI - Raport z wykonania projektu</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/bs.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="header">
+    	<div class="container">
+      	<p>RockPapersScissorsSI - Raport z wykonania projektu</p>
+      	<h4>Sztuczna Inteligencja, Uniwersytet Wrocławski - Instytut Informatyki</h4>
+      	<h4>Anna Adam, Piotr Imbierowicz</h4>
+      </div>
+    </div>
+    <div class="main">
+    	<div class="container">
+
+    		<h1>Temat projektu</h1>
+    		<p>Przedmiotem pracy jest przygotowanie gry komputerowej Kamień-Papier-Nożyce. Projekt zakłada połączenie dwóch dziedzin wykorzystujących elementy sztucznej inteligencji: analizy gestów na bazie obrazu oraz dobierania strategii gry do zachowania przeciwnika. W tym celu zostanie zaimplementowana prosta gra, w której jednym graczem będzie człowiek, a drugim maszyna. Komunikacja pomiędzy graczami będzie odbywać się przy pomocy kamery i ekranu komputera, bez konieczności korzystania z klawiszy. Zadaniem komputera jest zwiększyć szanse wygranej przez analizę zachowania człowieka.</p> 
+
+    		<h1>Metoda przetwarzania obrazu i wykrywania gestów</h1>
+    		<h2>Wymagania</h2>
+    		<p>Wybrany przez nas projekt zakładał wykorzystanie kamery w rozgrywce. Aplikacja miała posiadać zdolność rozpoznawania jednego z trzech gestów używanych w grze. Cały proces powinien odbywać się w czasie rzeczywistym. Do tego celu została wykorzystana biblioteka OpenCV.</p>
+
+    		<h2>Realizacja</h2>
+    		<p>Projektując program zdolny do analizy rzeczywistych obrazów z kamery należy mieć na uwadze wiele aspektów, które nie występują w zero-jedynkowym świecie. Istnieje bardzo wiele zmiennych niezależnych od samego algorytmu, mających duże znaczenie na wynikowe dane. Nie ma jednej określonej metody, która sprawdza się we większości warunków np. oświetlenia, odległości użytkownika od kamery, sposobu prezentacji gestów.<p>
+
+    		<p>Po przeanalizowaniu możliwych rozwiązań wybraliśmy system HaarTraining, ze względu na rozbudowana dokumentację biblioteki opencv, duży wachlarz dostępnych funkcji, popularność, a także liczbę pomocnych tutoriali.
+Inne testowane przez nas rozwiazania były częścią dużych rozbudowanych projektów. Nie stanowiły one tutoriali a jedynie pokaz możliwości biblioteki opencv. </p>
+
+<p>HaarTraining służy do tworzenia i trenowania kaskady wyszukującej dany obiekt w obrazie. 
+Aby z niego skorzystać należy zebrać odpowiednią ilość zdjęć negatywnych (nie zawierajacych szukanego obiektu) oraz pozytywnych (zawierajacych dany obiekt). 
+Wzorując się na artykule o wykrywaniu długopisu:
+<a href="http://opencvuser.blogspot.com/2011/08/creating-haar-cascade-classifier-aka.html">http://opencvuser.blogspot.com/2011/08/creating-haar-cascade-classifier-aka.html</a>
+Podjeliśmy próbe wygenerowania takiej kaskady w postaci pliku XML.
+W tym celu zgomadziliśmy ok. 200 zdjeć negatywnych i ok. 20 zdjeć pozytywnych.
+Tworzenie jednego pliku zajeło 40 godzin. Jednak efekty okazały sie niezadowalające.</p>
+
+<p>Z uwagi na długi czas oczekiwania na wygenerowanie pliku, nie podieliśmy kolejnej próby. 
+Skorzystaliśmy z gotowych klasyfikatorów dostępnych w repozytorium opencv, a także z pliku wygenerowanego przez autora artykuły podanego wyżej. 
+Po wykonaniu testów plików, które udało nam sie znaleźć wybraliśmy 3, które spełniały nasze kryteria. Plik do wykrywania otwartej dłoni, pięści a także całej dłoni za pomocą, którego odbywa się wykrywanie figury nożyc.</p> 
+
+<p>Biblioteka OpenCV oferuje podstawowe komponenty do budowy interfejsu graficznego użytkownika. Zawartość tej biblioteki jest jednak ograniczona i to rozwiązanie nie sprawdza się przy kompleksowych projektach. 
+Zdecydowaliśmy się na wykorzystanie Qt - zestawu przenośnych bibliotek i narzędzi programistycznych dedykowanych dla języków C++, QML, Java, których podstawowym składnikiem są klasy służące do budowy GUI. 
+Do tego celu wykorzystaliśmy środowisko programistyczne Qt Creator, które znacząco ułatwiło równoległa pracę obu bibliotek i dotsarczyło narzedzi do konwertowania dwóch różnych typów obrazu w poszególnych bibliotekach.</p>
+
+
+    		<h1>Algorytm strategii gry</h1>
+    		<h2>Kontekst</h2>
+
+				<p>Znalazienie strategii wygrywającej dla gry, w której każda tura składa się z jednego ruchu i jest zupełnie niezależną rozgrywką (przynajmniej w teorii) jest zadaniem nietrywialnym. <br />
+				Rozpoczynając prace nad algorytmem sztucznej inteligencji mieliśmy pewne teoretyczne obserwacje dotyczące problemu. W trakcie postępu prac wiele z naszych pierwotnych założeń zostało zweryfikowanych, a część z nich okazało się być nie do końca trafnych. Ostatecznie na podstawie kolejnych prób udało się przygotować krótki i skuteczny algorytm.</p>
+
+				<h2>Strategia przewidywania ruchów przeciwnika</h2>
+
+				<p>Początkowe plany zakładały przygotowanie odrębnych algorytmów do rozpoznawania konkretnych, wyodrębnionych zachowań gracza. Podstawowe kryteria budowane były na metodach statystycznych zliczających ilość wybieranych gestów każdego rodzaju. Kolejne, wciąż proste strategie analizowały np. częstość wykonywania podwójnych ruchów. Bardziej złożone bazowały na wynikach poprzednich rozgrywek, zależności ruchów gracza od ruchów przeciwnika.</p>
+
+				<p>Każda z powyższych strategii pozostawiała pewne luki dla gracza, który mógł doprowadzić do zwycięstwa przez powtarzanie odpowiednich sekwencji gestów. W tym momencie zdecydowaliśmy się na porzucenie wszystkich strategii statycznych i zastosowanie metody umożliwiającej dynamiczną analizę gry, bez jawnego programowania konkretnych zachowań.</p>
+
+				<p>Ostateczna wersja projektu wykorzystuje algorytm wyszukiwania wzorców w ciągach. Okazało się, że gracze, mając ograniczoną ilość ruchów - 3 gesty, bardzo często wykorzystują powtarzające się sekwencje. Siłą wybranego rozwiązania jest brak konieczności identyfikowania konkretnych zachowań w kodzie oraz krótki czas uczenia się strategii przeciwnika.</p>
+
+				<h2>Rezultaty</h2>
+
+				<p>Naszym pierwszym celem było przygotowanie sztucznej inteligencji, która będzie zdolna do reagowania na zmiany zachowania gracza. Oczywistym rozwinięciem tego założenia było zaprojektowanie algorytmu, który reaguje na zmiany w sposób umożliwiający osiągnięcie przewagi punktowej.</p>
+
+				<p>Ostateczny rezultat okazał się wysoce zadowalający. Niezależnie od tego, czy gracze są zaznajomieni ze sposobem “myślenia” programu czy nie, nie udaje im się znaleźć strategii prowadzącej do odgadnięcia kolejnych ruchów algrytmu i osiągnięcia wygranej.
+				Należy pamiętać, że mimo wszystko tury są niezależne i pojedyncze wyniki mogą w pełni nie odzwierciedlać rezultatów. Oserwacje kolejnych gier pozwoliły stwierdzić, że im rozgrywka jest dłuższa, tym trudniej jest pokonać algorytm. Ostatecznie po 20-30 ruchach nikomu nie udało się uzyskać przewagi punktowej.</p> 
+
+				<p>Taki rezultat jest częściowo spowodowany świadomymi lub podświadomymi zachowaniami człowieka, które sprawiają, że regularnie wybiera on określone sekwencje gestów oraz tym, że po dłuższej grze występuje pewne znudzenie zmniejszające zdolność wykonywania nieszablonowych zachowań.</p>
+
+
+				<h1>Ekran podglądu obrazu z kamery</h1>
+				<div class="row">
+					<div class="col-sm-4">
+						<img src="images/screeny/1.png" />
+					</div>
+					<div class="col-sm-4">
+						<img src="images/screeny/2.png" />
+					</div>
+					<div class="col-sm-4">
+						<img src="images/screeny/3.png" />
+					</div>
+				</div>
+				<h1>Ekran rozgrywki</h1>
+				<div class="row">
+					<div class="col-sm-4">
+						<img src="images/screeny/4.png" />
+					</div>
+					<div class="col-sm-4">
+						<img src="images/screeny/5.png" />
+					</div>
+					<div class="col-sm-4">
+						<img src="images/screeny/6.png" />
+					</div>
+				</div>
+				<br />
+				<br />
+				<br />
+				<br />
+      </div>
+    </div>
+  </body>
+</html>
